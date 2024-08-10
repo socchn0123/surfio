@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>surfio embedded</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="frame" src="loading.html" title="iframe"></iframe>
+    <script src="/chemical.js"></script>
+    <script>
+            function waitForChemicalLoaded() {
+                return new Promise((resolve) => {
+                    const checkLoaded = setInterval(() => {
+                        console.log("waiting");
+                        if (window.chemicalLoaded) {
+                            clearInterval(checkLoaded);
+                            resolve();
+                        }
+                    }, 500);
+                });
+            }
+            document.addEventListener("DOMContentLoaded", async function (e) {
+                await waitForChemicalLoaded();
+                const urlParams = new URLSearchParams(window.location.search);
+                let requested_url = atob(urlParams.get("u"));
+                if(!urlParams.get("u") || urlParams.get("u") === "") {
+                    requested_url = "https://google.com"
+                }
+                let url = await window.chemicalEncode(requested_url);
+                document.getElementById("frame").src = url;
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>surfio</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="manifest" href="/icons/site.webmanifest">
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2f545e">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-config" content="/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="title" content="surfio">
+    <meta name="description" content="surf around the web with no distractions">
+    <meta name="keywords" content="surf, web, simple, free">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <meta name="author" content="TM Labs">
+</head>
+<body class="bg-base-200">
+
+<div class="navbar bg-base-100">
+    <div class="flex items-center space-x-2">
+        <button id="backward" class="btn btn-ghost btn-circle">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button id="forward" class="btn btn-ghost btn-circle">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <button id="reload" class="btn btn-ghost btn-circle">
+            <i class="fas fa-redo"></i>
+        </button>
+        <button id="home" class="btn btn-ghost">
+            <img src="/icons/favicon-32x32.png" class="h-6">
+        </button>
+    </div>
+    <div class="flex-grow mx-4">
+        <div class="join w-full">
+            <select id="prtype" class="select max-w-xs select-bordered join-item">
+                <option value="uv">Ultraviolet</option>
+                <option value="scramjet">(INDEV) Scramjet</option>
+                <option value="rammerhead">(INDEV) Rammerhead</option>
+            </select>
+            <input type="text" id="urlbox" placeholder="Surf the web with no distractions" class="join-item input input-bordered input-md w-full" />
+        </div>
+    </div>
+    <div class="flex items-center">
+        <button id="devtools" class="btn btn-ghost btn-circle">
+            <i class="fas fa-code"></i>
+        </button>
+        <button onclick="settings_modal.showModal()" class="btn btn-ghost btn-circle">
+            <i class="fas fa-cog"></i>
+        </button>
+    </div>
+</div>
+
+<iframe id="preview" src="/loading.html" class="bg-base-100 w-full h-[calc(100vh-4rem)]"></iframe>
+
+<dialog id="settings_modal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Configuration</h3>
+        <p class="py-4">Configure your <strong>surfio</strong> client!</p>
+        
+        <label class="form-control w-full max-w-xs">
+            <div class="label">
+                <span class="label-text">Choose a theme</span>
+            </div><select id="theme_select" class="select select-bordered w-full max-w-xs">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="cupcake">Cupcake</option>
+        <option value="bumblebee">Bumblebee</option>
+        <option value="emerald">Emerald</option>
+        <option value="corporate">Corporate</option>
+        <option value="synthwave">Synthwave</option>
+        <option value="retro">Retro</option>
+        <option value="cyberpunk">Cyberpunk</option>
+        <option value="valentine">Valentine</option>
+        <option value="halloween">Halloween</option>
+        <option value="garden">Garden</option>
+        <option value="forest">Forest</option>
+        <option value="aqua">Aqua</option>
+        <option value="lofi">Lofi</option>
+        <option value="pastel">Pastel</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="wireframe">Wireframe</option>
+        <option value="black">Black</option>
+        <option value="luxury">Luxury</option>
+        <option value="dracula">Dracula</option>
+        <option value="cmyk">CMYK</option>
+        <option value="autumn">Autumn</option>
+        <option value="business">Business</option>
+        <option value="acid">Acid</option>
+        <option value="lemonade">Lemonade</option>
+        <option value="night">Night</option>
+        <option value="coffee">Coffee</option>
+        <option value="winter">Winter</option>
+        <option value="dim">Dim</option>
+        <option value="nord">Nord</option>
+        <option value="sunset">Sunset</option>
+        </select>
+        </label>
+
+        <label class="form-control w-full max-w-xs mt-4">
+            <div class="label">
+                <span class="label-text">Blacklisted Keywords</span>
+            </div>
+            <input id="keywordInput" type="text" placeholder="Add keyword and press Enter" class="input input-bordered w-full" />
+            <div id="keywordTagsContainer" class="flex flex-wrap mt-2"></div>
+        </label>
+
+        <label class="form-control w-full max-w-xs mt-4">
+            <div class="label">
+                <span class="label-text">Blacklisted Websites</span>
+            </div>
+            <input id="websiteInput" type="text" placeholder="Add website URL and press Enter" class="input input-bordered w-full" />
+            <div id="websiteListContainer" class="flex flex-col mt-2"></div>
+        </label>
+
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <div class="modal-action"></div>
+    </div>
+</dialog>
+<div id="toast" class="toast toast-top toast-end hidden">
+    <div class="alert alert-error">
+        <span id="toastMessage">This website is blacklisted!</span>
+    </div>
+</div>
+<script src="/chemical.js"></script>
+<script>
+    const search = document.getElementById("urlbox");
+    const back = document.getElementById("backward");
+    const forward = document.getElementById("forward");
+    const reload = document.getElementById("reload");
+    const home = document.getElementById("home");
+
+    document.addEventListener("DOMContentLoaded", async function (e) {
+        await waitForChemicalLoaded();
+        loadBlacklistedData();
+
+        let url = await window.chemicalEncode("https://google.com", document.getElementById("prtype").value);
+        document.getElementById("preview").src = url;
+        search.value = "google.com";
+
+        search.addEventListener("keydown", handleSearch);
+        back.addEventListener("click", () => document.getElementById("preview").contentWindow.history.back());
+        forward.addEventListener("click", () => document.getElementById("preview").contentWindow.history.forward());
+        reload.addEventListener("click", () => document.getElementById("preview").contentWindow.location.reload());
+        home.addEventListener("click", async () => {
+            let home_url = await window.chemicalEncode("https://google.com", document.getElementById("prtype").value);
+            document.getElementById("preview").src = home_url;
+        });
+        document.getElementById('devtools').addEventListener('click', () => {
+            const iframe = document.getElementById('preview').contentWindow;
+            const script = document.createElement('script');
+            script.src = "https://cdn.jsdelivr.net/npm/eruda";
+            script.onload = function () {
+                iframe.eruda.init();
+            };
+            iframe.document.body.appendChild(script);
+        });
+    });
+
+    function handleSearch(e) {
+        if (e.key === "Enter" && window.chemicalLoaded && e.target.value) {
+            let inputValue = e.target.value.trim();
+            const isValidUrl = /^(http:\/\/|https:\/\/|ftp:\/\/)/i.test(inputValue);
+            if (!isValidUrl) {
+                if (!inputValue.startsWith("http://") && !inputValue.startsWith("https://")) {
+                    inputValue = `https://google.com/search?q=${encodeURIComponent(inputValue)}`;
+                }
+            }
+            if (isBlacklistedWebsite(inputValue)) {
+                document.getElementById("toastMessage").textContent = "This website is blacklisted!";
+                document.getElementById("toast").classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById("toast").classList.add('hidden');
+                }, 3000);
+            } else {
+                const blacklistedKeywords = JSON.parse(localStorage.getItem("blacklistedKeywords")) || [];
+                if (blacklistedKeywords.some(keyword => inputValue.includes(keyword))) {
+                    document.getElementById("toastMessage").textContent = "This keyword is blacklisted!";
+                    document.getElementById("toast").classList.remove('hidden');
+                    setTimeout(() => {
+                        document.getElementById("toast").classList.add('hidden');
+                    }, 3000);
+                } else {
+                    window.chemicalEncode(inputValue, document.getElementById("prtype").value)
+                        .then(url => {
+                            document.getElementById("preview").src = url;
+                        });
+                }
+            }
+        }
+    }
+
+    function waitForChemicalLoaded() {
+        return new Promise((resolve) => {
+            const checkLoaded = setInterval(() => {
+                console.log("waiting");
+                if (window.chemicalLoaded) {
+                    clearInterval(checkLoaded);
+                    resolve();
+                }
+            }, 500);
+        });
+    }
+
+    function loadBlacklistedData() {
+        const blacklistedKeywords = JSON.parse(localStorage.getItem("blacklistedKeywords")) || [];
+        blacklistedKeywords.forEach(keyword => addKeywordTag(keyword));
+
+        const blacklistedWebsites = JSON.parse(localStorage.getItem("blacklistedWebsites")) || [];
+        blacklistedWebsites.forEach(url => addWebsiteItem(url));
+    }
+
+    function addKeywordTag(keyword) {
+        const keywordTagsContainer = document.getElementById("keywordTagsContainer");
+        const tag = document.createElement("span");
+        tag.className = "badge badge-accent mr-2";
+        tag.textContent = keyword;
+        const removeButton = document.createElement("button");
+        removeButton.innerHTML = '<i class="fa fa-times cursor-pointer"></i>';
+        removeButton.className = " ml-1";
+        removeButton.onclick = () => {
+            keywordTagsContainer.removeChild(tag);
+            removeKeywordFromStorage(keyword);
+        };
+        tag.appendChild(removeButton);
+        keywordTagsContainer.appendChild(tag);
+    }
+
+    function removeKeywordFromStorage(keyword) {
+        let keywords = JSON.parse(localStorage.getItem("blacklistedKeywords")) || [];
+        keywords = keywords.filter(k => k !== keyword);
+        localStorage.setItem("blacklistedKeywords", JSON.stringify(keywords));
+    }
+
+    const keywordInput = document.getElementById("keywordInput");
+    keywordInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            const keyword = keywordInput.value.trim();
+            if (keyword) {
+                addKeywordTag(keyword);
+                const keywords = JSON.parse(localStorage.getItem("blacklistedKeywords")) || [];
+                keywords.push(keyword);
+                localStorage.setItem("blacklistedKeywords", JSON.stringify(keywords));
+                keywordInput.value = '';
+            }
+        }
+    });
+
+    function addWebsiteItem(url) {
+        const websiteListContainer = document.getElementById("websiteListContainer");
+        const websiteItem = document.createElement("div");
+        websiteItem.className = "flex items-center justify-between p-2 bg-base-300 rounded my-1";
+        websiteItem.dataset.url = url;
+        websiteItem.innerHTML = `<img src="https://www.google.com/s2/favicons?sz=64&domain_url=${url}" alt="${url}" class="h-6 w-6"> <span>${url}</span> <i class="fa fa-times cursor-pointer" onclick="removeWebsite(this)"></i>`;
+        websiteListContainer.appendChild(websiteItem);
+    }
+
+    function removeWebsite(element) {
+        const url = element.closest('.website-item').dataset.url;
+        element.closest('.website-item').remove();
+        removeWebsiteFromStorage(url);
+    }
+
+    function removeWebsiteFromStorage(url) {
+        let websites = JSON.parse(localStorage.getItem("blacklistedWebsites")) || [];
+        websites = websites.filter(w => w !== url);
+        localStorage.setItem("blacklistedWebsites", JSON.stringify(websites));
+    }
+
+    const websiteInput = document.getElementById("websiteInput");
+    websiteInput.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            const url = websiteInput.value.trim();
+            if (url) {
+                addWebsiteItem(url);
+                const websites = JSON.parse(localStorage.getItem("blacklistedWebsites")) || [];
+                websites.push(url);
+                localStorage.setItem("blacklistedWebsites", JSON.stringify(websites));
+                websiteInput.value = '';
+            }
+        }
+    });
+
+    function isBlacklistedWebsite(url) {
+        const blacklistedWebsites = JSON.parse(localStorage.getItem("blacklistedWebsites")) || [];
+        return blacklistedWebsites.some(blacklistedUrl => url.includes(blacklistedUrl));
+    }
+</script>
+
+</body>
+</html>

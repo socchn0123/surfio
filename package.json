@@ -1,0 +1,20 @@
+{
+  "name": "surfio",
+  "version": "1.0.0",
+  "description": "A web proxy built with ChemicalJS and DaisyUI",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "tlochsta",
+  "license": "MIT",
+  "homepage": "https://surfio.tlch.xyz",
+  "dependencies": {
+    "chemicaljs": "^1.6.5",
+    "express": "^4.19.2",
+    "next": "^14.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
