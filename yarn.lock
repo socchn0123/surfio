@@ -547,7 +547,7 @@ chemicaljs@^1.6.5:
     "@mercuryworkshop/wisp-js" "^0.1.1"
     "@titaniumnetwork-dev/ultraviolet" "^3.2.7"
     express "^4.19.2"
-    rammerhead "https://github.com/chemicaljs/chemical/raw/main/rammerhead.tgz"
+    rammerhead "https://github.com/chemicaljs/chemical/raw/94d7895d4f97641f5fb9500f6a69e0ba9c86d21f/rammerhead.tgz"
 
 chownr@^1.1.1:
   version "1.1.4"
@@ -1740,9 +1740,9 @@ qs@6.11.0:
   dependencies:
     side-channel "^1.0.4"
 
-"rammerhead@https://github.com/chemicaljs/chemical/raw/main/rammerhead.tgz":
+"rammerhead@https://github.com/chemicaljs/chemical/raw/94d7895d4f97641f5fb9500f6a69e0ba9c86d21f/rammerhead.tgz
   version "1.2.41-holy.5"
-  resolved "https://github.com/chemicaljs/chemical/raw/main/rammerhead.tgz#b75e518a9a24ad752f09e4c359b028051336df9d"
+  resolved "https://github.com/chemicaljs/chemical/raw/94d7895d4f97641f5fb9500f6a69e0ba9c86d21f/rammerhead.tgz#b75e518a9a24ad752f09e4c359b028051336df9d"
   dependencies:
     async-exit-hook "^2.0.1"
     cookie "^0.5.0"
